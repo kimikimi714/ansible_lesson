@@ -2,6 +2,39 @@
 - hosts: all
   sudo: yes
   tasks:
-    - name: add a new user
-      user: name=kimikimi714
-
+    - name: epel-releaseをインストールする
+      yum: name=epel-release state=latest
+- hosts: web_server
+  sudo: yes
+  tasks:
+    - name: install apache
+      yum: name=httpd state=latest
+    - name: start and enable apache
+      service: name=httpd state=started enabled=yes
+    - name: change owner
+      file: dest=/var/www/html owner=vagrant recurse=yes
+    - name: install php
+      yum: name={{item}} enablerepo=epel state=latest
+      with_items:
+        - php
+        - php-devel
+        - php-dom
+        - php-mcrypt
+        - php-mbstring
+        - php-mysql
+      notify:
+        - restart apache
+    - name: copy index.php
+      copy: src=./index.php dest=/var/www/html/index.php owner=vagrant
+    - name: remove index.html
+      file: dest=/var/www/html/index.html state=absent
+  handlers:
+    - name: restart apache
+      service: name=httpd state=restarted
+- hosts: db_server
+  sudo: yes
+  tasks:
+    - name: install mysql
+      yum: name=mysql-server state=latest
+    - name: start and enable mysql
+      service: name=mysqld state=started enabled=yes
