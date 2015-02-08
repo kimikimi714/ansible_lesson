@@ -1,0 +1,11 @@
+---
+- hosts: db_server
+  sudo: yes
+  roles:
+    - centos7
+    - mariadb
+  tasks:
+    - name: create a database
+      mysql_db: name=mydb state=present
+    - name: create a user for mydb
+      mysql_user: name=dbuser password=dbpassword host=192.168.33.% priv=mydb.*:ALL state=present

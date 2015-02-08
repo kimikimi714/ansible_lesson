@@ -1,0 +1,4 @@
+---
+# file: roles/php/handlers/main.yml
+- name: apacheを再起動する
+  service: name=httpd state=restarted

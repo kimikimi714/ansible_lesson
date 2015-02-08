@@ -1,0 +1,14 @@
+---
+- hosts: web_server
+  sudo: yes
+  roles:
+    - centos7
+    - apache
+    - php
+  tasks:
+    - name: ドキュメントルートのownerを変更する
+      file: dest=/var/www/html owner=vagrant recurse=yes
+    - name: index.phpをドキュメントルートにコピーする
+      copy: src=./index.php dest=/var/www/html/index.php owner=vagrant
+    - name: MariaDBクライアントをインストールする
+      yum: name=mariadb state=latest

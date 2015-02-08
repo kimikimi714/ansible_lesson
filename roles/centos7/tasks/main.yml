@@ -1,0 +1,13 @@
+---
+# file: roles/common/tasks/main.yml
+- name: epel-releaseをインストールする
+  yum: name=epel-release state=latest
+  tags: epel
+
+- name: ntpをインストールする
+  yum: pkg=ntp state=installed
+  tags: ntp
+
+- name: ntpを起動する
+  service: name=ntpd state=running enabled=yes
+  tags: ntp

@@ -1,0 +1,10 @@
+---
+# file: roles/mariadb/tasks/main.yml
+- name: MariaDBサーバをインストールする
+  yum: name={{item}} state=latest
+  with_items:
+    - mariadb-server
+    - MySQL-python
+
+- name: MariaDBサーバを起動する
+  service: name=mariadb state=started enabled=yes

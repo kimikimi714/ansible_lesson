@@ -1,0 +1,16 @@
+---
+# file: roles/php/tasks/main.yml
+- name: phpをインストールする
+  yum: name={{item}} enablerepo=epel state=latest
+  with_items:
+    - php
+    - php-devel
+    - php-dom
+    - php-mcrypt
+    - php-mbstring
+    - php-mysql
+    - pcre-devel
+    - gcc
+    - make
+  notify:
+    - apacheを再起動する

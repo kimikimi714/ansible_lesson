@@ -1,0 +1,7 @@
+---
+# file: roles/apache/tasks/main.yml
+- name: apacheをインストールする
+  yum: name=httpd state=latest
+
+- name: apacheを起動する
+  service: name=httpd state=started enabled=yes
